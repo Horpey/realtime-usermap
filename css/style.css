@@ -1,0 +1,6 @@
+#mapid {
+  height: 500px;
+}
+.leaflet-marker-pane img {
+  border-radius: 60px;
+}
