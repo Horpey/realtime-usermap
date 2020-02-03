@@ -1,11 +1,58 @@
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    // Initialize the Google Maps API v3
-    console.log(position);
+getLocation();
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    // x.innerHTML = 'Geolocation is not supported by this browser.';
+  }
+}
+
+function showPosition(position) {
+  userMarker(position.coords.latitude, position.coords.longitude);
+  // Call the autoUpdate() function every 5 seconds
+  setTimeout(getLocation, 5000);
+}
+
+function userMarker(lat, long) {
+  console.log('Latitude ' + lat);
+  console.log('Latitude ' + long);
+
+  document.getElementById('lat').innerHTML = lat;
+  document.getElementById('long').innerHTML = long;
+
+  var customUser = L.icon({
+    iconUrl: '../img/customUser.png',
+    shadowUrl: '../img/pointer.svg',
+    iconSize: [50, 50], // size of the icon
+    iconAnchor: [24, 35], // the same for the shadow
+    shadowSize: [30, 40], // size of the shadow
+    shadowAnchor: [14, 0], // the same for the shadow
+    popupAnchor: [0, -40] // point from which the popup should open relative to the iconAnchor
   });
 
+  L.marker([lat, long], { icon: customUser })
+    .addTo(mymap)
+    .bindPopup('Hi, I am Custom User' + lat);
+
+  //api.mapbox.com/styles/v1/YOUR_USERNAME/YOUR_STYLE_ID/tiles/256/{z}/{x}/{y}?access_token=YOUR_ACCESS_TOKEN
+
+  //api.mapbox.com/styles/v1/horpey/ck66fpv4j3glx1ilfgv6d36kd.html?fresh=true&title=view&access_token=pk.eyJ1IjoiaG9ycGV5IiwiYSI6ImNqZXNrOHgweDN3ZHgycW1lNGd0MzY2NG8ifQ.iE72uu46mll2LzAIP2KRQA
+
+  https: L.tileLayer(
+    'https://api.mapbox.com/styles/v1/horpey/ck66fpv4j3glx1ilfgv6d36kd/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaG9ycGV5IiwiYSI6ImNqZXNrOHgweDN3ZHgycW1lNGd0MzY2NG8ifQ.iE72uu46mll2LzAIP2KRQA',
+    {
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox/streets-v11',
+      accessToken: 'your.mapbox.access.token'
+    }
+  ).addTo(mymap);
+}
+if (navigator.geolocation) {
   //   Map Location
-  var mymap = L.map('mapid').setView([6.5244, 3.3792], 13);
+  var mymap = L.map('mapid').setView([6.499489, 3.3763878], 30);
 
   //   Map Markers
   //   var marker = L.marker([6.4983, 3.3486]).addTo(mymap);
@@ -70,7 +117,7 @@ if (navigator.geolocation) {
 
   //api.mapbox.com/styles/v1/YOUR_USERNAME/YOUR_STYLE_ID/tiles/256/{z}/{x}/{y}?access_token=YOUR_ACCESS_TOKEN
   https: L.tileLayer(
-    'https://api.mapbox.com/styles/v1/horpey/cjlpcgvls7j5k2rqrfa3lc4ri/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaG9ycGV5IiwiYSI6ImNqZXNrOHgweDN3ZHgycW1lNGd0MzY2NG8ifQ.iE72uu46mll2LzAIP2KRQA',
+    'https://api.mapbox.com/styles/v1/horpey/ck66fpv4j3glx1ilfgv6d36kd/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaG9ycGV5IiwiYSI6ImNqZXNrOHgweDN3ZHgycW1lNGd0MzY2NG8ifQ.iE72uu46mll2LzAIP2KRQA',
     {
       attribution:
         'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
